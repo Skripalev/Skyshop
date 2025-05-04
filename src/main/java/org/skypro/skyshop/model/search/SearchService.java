@@ -16,8 +16,13 @@ public class SearchService {
     }
 
     public Collection<SearchResult> search(String pattern) {
+        if (pattern == null) {
+            throw new IllegalArgumentException("Search pattern cannot be null");
+        }
+
         return storageService.getAllSearchables().stream()
-                .filter(searchable -> searchable.getSearchTerm().toLowerCase().contains(pattern.toLowerCase()))
+                .filter(searchable -> searchable.getSearchTerm().toLowerCase()
+                        .contains(pattern.toLowerCase()))
                 .map(SearchResult::fromSearchable)
                 .collect(Collectors.toList());
     }
